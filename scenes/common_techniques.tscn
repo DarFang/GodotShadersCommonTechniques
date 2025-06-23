@@ -1,10 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://bw86fsv6rvi5h"]
+[gd_scene load_steps=19 format=3 uid="uid://bw86fsv6rvi5h"]
 
 [ext_resource type="Script" uid="uid://di12thpocmjia" path="res://scripts/common_techniques.gd" id="1_0ugy3"]
 [ext_resource type="Texture2D" uid="uid://dw27ks2iy6r18" path="res://assets/other/Terrain (16x16).png" id="2_4ntks"]
 [ext_resource type="PackedScene" uid="uid://cf8ow35myt7tq" path="res://scenes/player.tscn" id="2_ttseq"]
 [ext_resource type="Shader" uid="uid://cd7aj4fsvy7q7" path="res://shaders/scrolling_bg.gdshader" id="4_xth1f"]
 [ext_resource type="Texture2D" uid="uid://xpl1l8o6wwa4" path="res://assets/background/Gray.png" id="5_mfsxn"]
+[ext_resource type="Shader" uid="uid://2eoxfnreh4ti" path="res://shaders/grayscale.gdshader" id="6_kak6i"]
+[ext_resource type="Texture2D" uid="uid://b4cgytxlrs4ak" path="res://assets/other/End.png" id="6_mfsxn"]
+[ext_resource type="Shader" uid="uid://bf0tn3yl8xkpp" path="res://shaders/map_to_gradient.gdshader" id="8_jqsh0"]
+[ext_resource type="Shader" uid="uid://d2ghcsr6ka3y0" path="res://shaders/screen_reading.gdshader" id="9_ty7i1"]
+[ext_resource type="Texture2D" uid="uid://w67qu37jpvs2" path="res://icon.svg" id="10_luoof"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sehxt"]
 texture = ExtResource("2_4ntks")
@@ -171,6 +176,23 @@ shader = ExtResource("4_xth1f")
 shader_parameter/tiling = Vector2(10, 10)
 shader_parameter/offset = Vector2(1, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jqsh0"]
+shader = ExtResource("6_kak6i")
+
+[sub_resource type="Gradient" id="Gradient_jqsh0"]
+offsets = PackedFloat32Array(0.116402, 0.640212, 0.989418)
+colors = PackedColorArray(0, 0, 0, 1, 0.918982, 0.0026644, 0.00146067, 1, 1, 0.983333, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pqqsy"]
+gradient = SubResource("Gradient_jqsh0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pqqsy"]
+shader = ExtResource("8_jqsh0")
+shader_parameter/gradient_texture = SubResource("GradientTexture2D_pqqsy")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ux0nb"]
+shader = ExtResource("9_ty7i1")
+
 [node name="CommonTechniques" type="Node2D"]
 script = ExtResource("1_0ugy3")
 
@@ -192,3 +214,22 @@ material = SubResource("ShaderMaterial_kak6i")
 position = Vector2(568, 246)
 scale = Vector2(18.0469, 18.0469)
 texture = ExtResource("5_mfsxn")
+
+[node name="Grayscale" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_jqsh0")
+position = Vector2(314, 384)
+scale = Vector2(3, 3)
+texture = ExtResource("6_mfsxn")
+
+[node name="Gradient" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_pqqsy")
+position = Vector2(493, 382)
+scale = Vector2(3, 3)
+texture = ExtResource("6_mfsxn")
+
+[node name="ScreenReading" type="Sprite2D" parent="."]
+z_index = 999
+material = SubResource("ShaderMaterial_ux0nb")
+position = Vector2(957, 212)
+scale = Vector2(3.625, 6.05078)
+texture = ExtResource("10_luoof")
